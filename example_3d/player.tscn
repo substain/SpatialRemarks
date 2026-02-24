@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://dkfl02joeitwt"]
+
+[ext_resource type="Script" uid="uid://bcbdsv8ncusft" path="res://example_3d/player.gd" id="1_vjlsr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c8ccl"]
+albedo_color = Color(0.966201, 0.53232914, 0.76238626, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_o71bd"]
+material = SubResource("StandardMaterial3D_c8ccl")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c8ccl"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_c8ccl"]
+material = SubResource("StandardMaterial3D_c8ccl")
+radius = 0.1
+height = 0.5
+
+[node name="Player" type="CharacterBody3D" unique_id=1489698894 node_paths=PackedStringArray("camera_3d")]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_vjlsr")
+camera_3d = NodePath("Camera3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=170878417]
+mesh = SubResource("CapsuleMesh_o71bd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=946886006]
+shape = SubResource("CapsuleShape3D_c8ccl")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=439588465]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="ArmMeshInstance3D" type="MeshInstance3D" parent="Camera3D" unique_id=1982957956]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.3, -0.19999999, -0.48354897)
+mesh = SubResource("CapsuleMesh_c8ccl")

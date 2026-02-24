@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://ca8m4skfty3dp"]
+
+[ext_resource type="Script" uid="uid://cbkxtrllcqkxd" path="res://example_3d/pause_menu.gd" id="1_vo5ii"]
+
+[node name="UI" type="CanvasLayer" unique_id=1600335488]
+
+[node name="PauseMenu" type="VBoxContainer" parent="." unique_id=1152310130 node_paths=PackedStringArray("settings_button")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vo5ii")
+settings_button = NodePath("SettingsButtonPivot/SettingsButton")
+
+[node name="PausedLabel" type="Label" parent="PauseMenu" unique_id=1741583954]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "- GMAE PAUSED -"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="PauseMenu" unique_id=1102069464]
+custom_minimum_size = Vector2(140, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Continue"
+
+[node name="SettingsButtonPivot" type="Control" parent="PauseMenu" unique_id=714162207]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+
+[node name="SettingsButton" type="Button" parent="PauseMenu/SettingsButtonPivot" unique_id=1835234404]
+custom_minimum_size = Vector2(140, 30)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -15.5
+offset_right = 70.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="PauseMenu" unique_id=291028847]
+custom_minimum_size = Vector2(140, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Quit"
+
+[connection signal="pressed" from="PauseMenu/ContinueButton" to="PauseMenu" method="_on_continue_button_pressed"]
+[connection signal="mouse_entered" from="PauseMenu/SettingsButtonPivot" to="PauseMenu" method="_on_button_pivot_mouse_entered"]
+[connection signal="mouse_exited" from="PauseMenu/SettingsButtonPivot" to="PauseMenu" method="_on_button_pivot_mouse_exited"]
+[connection signal="focus_entered" from="PauseMenu/SettingsButtonPivot/SettingsButton" to="PauseMenu" method="_on_settings_button_focus_entered"]
+[connection signal="focus_exited" from="PauseMenu/SettingsButtonPivot/SettingsButton" to="PauseMenu" method="_on_settings_button_focus_exited"]
+[connection signal="mouse_entered" from="PauseMenu/SettingsButtonPivot/SettingsButton" to="PauseMenu" method="_on_settings_button_mouse_entered"]
+[connection signal="mouse_exited" from="PauseMenu/SettingsButtonPivot/SettingsButton" to="PauseMenu" method="_on_settings_button_mouse_exited"]
+[connection signal="pressed" from="PauseMenu/QuitButton" to="PauseMenu" method="_on_quit_button_pressed"]

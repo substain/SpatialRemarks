@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://djdcjn3f0srac"]
+
+[ext_resource type="Script" uid="uid://cwv1ndx4s548q" path="res://addons/spatial_remarks/sr_dock/sr_data_row.gd" id="1_4lw6w"]
+
+[node name="SrDataRow" type="HBoxContainer" unique_id=890761630 node_paths=PackedStringArray("_position_label", "_text_label", "_author_label", "_target_node_label", "_scene_label", "_version_label")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+script = ExtResource("1_4lw6w")
+_position_label = NodePath("PositionLabel")
+_text_label = NodePath("TextLabel")
+_author_label = NodePath("AuthorLabel")
+_target_node_label = NodePath("TargetNodeLabel")
+_scene_label = NodePath("SceneLabel")
+_version_label = NodePath("VersionLabel")
+
+[node name="VersionLabel" type="Label" parent="." unique_id=1077649591]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "vX.X.XX"
+text_overrun_behavior = 1
+
+[node name="PositionLabel" type="Label" parent="." unique_id=1511835587]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "(?,?,?)"
+text_overrun_behavior = 1
+
+[node name="TargetNodeLabel" type="Label" parent="." unique_id=255994552]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "XX"
+text_overrun_behavior = 1
+
+[node name="SceneLabel" type="Label" parent="." unique_id=731281497]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Examplescene"
+text_overrun_behavior = 1
+
+[node name="AuthorLabel" type="Label" parent="." unique_id=1760443710]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "Someone"
+text_overrun_behavior = 1
+
+[node name="TextLabel" type="Label" parent="." unique_id=218992312]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Lorem ipsum..."
+text_overrun_behavior = 1
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

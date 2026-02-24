@@ -1,0 +1,220 @@
+[gd_scene format=3 uid="uid://cjamilva37qkw"]
+
+[ext_resource type="PackedScene" uid="uid://ca8m4skfty3dp" path="res://example_3d/pause_ui.tscn" id="1_3qe8g"]
+[ext_resource type="PackedScene" uid="uid://dkfl02joeitwt" path="res://example_3d/player.tscn" id="2_b7hra"]
+[ext_resource type="Script" uid="uid://bq424wt3ouuxx" path="res://example_3d/trigger_area.gd" id="3_jfm4q"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xx07f"]
+sky_top_color = Color(0.66403884, 0.7637878, 0.74336135, 1)
+sky_horizon_color = Color(0.7690442, 0.5284388, 0.23506904, 1)
+ground_bottom_color = Color(0.08918456, 0.042244248, 0.013089955, 1)
+ground_horizon_color = Color(0.76862746, 0.5294118, 0.23529412, 1)
+
+[sub_resource type="Sky" id="Sky_jfm4q"]
+sky_material = SubResource("ProceduralSkyMaterial_xx07f")
+
+[sub_resource type="Environment" id="Environment_u77to"]
+background_mode = 2
+sky = SubResource("Sky_jfm4q")
+ambient_light_source = 3
+ambient_light_color = Color(0.76862746, 0.5294118, 0.23529412, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xx07f"]
+size = Vector3(40, 3, 35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xx07f"]
+albedo_color = Color(0.36980817, 0.563971, 0.22918111, 1)
+metallic_specular = 0.75
+roughness = 0.36
+
+[sub_resource type="BoxMesh" id="BoxMesh_xx07f"]
+material = SubResource("StandardMaterial3D_xx07f")
+size = Vector3(40, 3, 40)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_xx07f"]
+radius = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jfm4q"]
+transparency = 1
+albedo_color = Color(0.7705656, 0.5401193, 3.85046e-07, 0.25882354)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jfm4q"]
+material = SubResource("StandardMaterial3D_jfm4q")
+top_radius = 5.0
+bottom_radius = 5.0
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jfm4q"]
+friction = 0.2
+bounce = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4x5ht"]
+albedo_color = Color(0.92978746, 0.24022835, 0.2992227, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_uk58r"]
+material = SubResource("StandardMaterial3D_4x5ht")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jfm4q"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u77to"]
+albedo_color = Color(4.7168137e-06, 0.59093803, 0.74406177, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u77to"]
+material = SubResource("StandardMaterial3D_u77to")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u77to"]
+size = Vector3(3, 1, 3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4x5ht"]
+material = SubResource("StandardMaterial3D_xx07f")
+size = Vector3(3, 1, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4x5ht"]
+size = Vector3(50, 5, 100)
+
+[node name="Level" type="Node3D" unique_id=82279985]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=713345809]
+environment = SubResource("Environment_u77to")
+
+[node name="PauseUI" parent="." unique_id=1600335488 instance=ExtResource("1_3qe8g")]
+layer = 2
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1819430564]
+layer = 3
+visible = false
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD" unique_id=161741393]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+offset_right = 376.0
+grow_vertical = 0
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="HPHBoxContainer" type="HBoxContainer" parent="HUD/MarginContainer" unique_id=378401309]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="HUD/MarginContainer/HPHBoxContainer" unique_id=13584004]
+layout_mode = 2
+text = "Health"
+
+[node name="ProgressBar" type="ProgressBar" parent="HUD/MarginContainer/HPHBoxContainer" unique_id=15736179]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 99.0
+value = 42.0
+
+[node name="Button" type="Button" parent="HUD/MarginContainer/HPHBoxContainer" unique_id=1647073229]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+focus_mode = 0
+text = "Heal 20"
+
+[node name="Player" parent="." unique_id=1489698894 instance=ExtResource("2_b7hra")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8000001, 0)
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1146566214]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1135669758]
+shape = SubResource("BoxShape3D_xx07f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=1102325315]
+mesh = SubResource("BoxMesh_xx07f")
+
+[node name="TriggerArea" type="Area3D" parent="." unique_id=298260931 node_paths=PackedStringArray("plattform1", "plattform2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.469816, 0.9027748, 13.7)
+collision_layer = 3
+collision_mask = 2
+script = ExtResource("3_jfm4q")
+plattform1 = NodePath("../Plattform1")
+plattform2 = NodePath("../Plattform2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerArea" unique_id=41149245]
+shape = SubResource("CylinderShape3D_xx07f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TriggerArea" unique_id=1729096443]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.90000004, 0)
+mesh = SubResource("CylinderMesh_jfm4q")
+
+[node name="RedCube" type="RigidBody3D" parent="." unique_id=855964986]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 7, -7)
+collision_layer = 3
+collision_mask = 3
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_jfm4q")
+gravity_scale = 0.5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RedCube" unique_id=1763745693]
+mesh = SubResource("BoxMesh_uk58r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RedCube" unique_id=1361076528]
+shape = SubResource("BoxShape3D_jfm4q")
+
+[node name="BlueCube" type="RigidBody3D" parent="." unique_id=988548901]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.03715, 135.60808, -17.14292)
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_jfm4q")
+gravity_scale = 0.5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BlueCube" unique_id=1804550693]
+mesh = SubResource("BoxMesh_u77to")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BlueCube" unique_id=1962898936]
+shape = SubResource("BoxShape3D_jfm4q")
+
+[node name="Plattform1" type="RigidBody3D" parent="." unique_id=1611480879]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7, -0.5, 17)
+collision_layer = 2
+collision_mask = 2
+gravity_scale = 0.0
+lock_rotation = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plattform1" unique_id=1708479258]
+shape = SubResource("BoxShape3D_u77to")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plattform1" unique_id=286258349]
+mesh = SubResource("BoxMesh_4x5ht")
+
+[node name="Plattform2" type="RigidBody3D" parent="." unique_id=1093822885]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0999997, -0.5, 12.499999)
+collision_layer = 2
+collision_mask = 2
+gravity_scale = 0.0
+lock_rotation = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plattform2" unique_id=1143585137]
+shape = SubResource("BoxShape3D_u77to")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plattform2" unique_id=1921087601]
+mesh = SubResource("BoxMesh_4x5ht")
+
+[node name="Plattform3" type="RigidBody3D" parent="." unique_id=1702673693]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 6, 22.5)
+collision_layer = 2
+collision_mask = 2
+gravity_scale = 0.0
+lock_rotation = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plattform3" unique_id=2088210072]
+shape = SubResource("BoxShape3D_u77to")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plattform3" unique_id=2138040284]
+mesh = SubResource("BoxMesh_4x5ht")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=238893526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -50, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=222530553]
+shape = SubResource("BoxShape3D_4x5ht")
+
+[connection signal="body_entered" from="TriggerArea" to="TriggerArea" method="_on_body_entered"]
+[connection signal="body_exited" from="TriggerArea" to="TriggerArea" method="_on_body_exited"]

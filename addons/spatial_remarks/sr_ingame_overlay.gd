@@ -11,6 +11,7 @@ func _ready() -> void:
 	#pass
 
 func show_remark(srd: SRData) -> void:
+	print("show remark")
 	_panel_container.visible = true
 	_title_rtl.text = srd.author
 	_content_rtl.text = srd.text + "\n[i]~" + srd.author + "[/i]"

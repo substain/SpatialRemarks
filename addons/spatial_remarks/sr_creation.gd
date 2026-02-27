@@ -13,10 +13,12 @@ class TargetNodeData:
 	var node: Node
 	var target_position: Vector3
 	var target_name: String
-	
-	func _init(node_new: Node, target_position_new: Vector3, custom_name_new: String = "") -> void:
+	var is_2d: bool
+		
+	func _init(node_new: Node, target_position_new: Vector3, is_2d_new: bool, custom_name_new: String = "") -> void:
 		node = node_new
 		target_position = target_position_new
+		is_2d = is_2d_new
 		target_name = custom_name_new if !custom_name_new.is_empty() else node_new.name
 
 @export var _position_label: RichTextLabel
@@ -89,6 +91,8 @@ func init(config: SRDataAccess.Config) -> void:
 		_remark_to_create.target_node = _possible_targets[current_target_idx].target_name
 		_target_object_value_label.text = _possible_targets[current_target_idx].target_name
 		_position_value_label.text = str(_possible_targets[current_target_idx].target_position)
+		_remark_to_create.is_2d = _possible_targets[current_target_idx].is_2d
+		_remark_to_create.global_position = _possible_targets[current_target_idx].target_position
 
 	_target_object_label.visible = config.show_target_node
 	_target_object_value_label.visible = config.show_target_node && (_possible_targets.size() == 0 || !config.target_node_selectable)
@@ -116,9 +120,10 @@ func _on_create_pressed() -> void:
 
 	if _config.target_node_selectable:
 		var idx: int = _target_object_option_button.selected
-		if idx > 0:
+		if idx >= 0:
 			_remark_to_create.target_node = _possible_targets[idx].target_name
 			_remark_to_create.global_position = _possible_targets[idx].target_position
+			_remark_to_create.is_2d = _possible_targets[idx].is_2d
 
 	SRHandler.add_data([_remark_to_create])
 	finish()
@@ -187,14 +192,14 @@ static func _query_possible_targets_3d(config: SRDataAccess.Config, _viewport: V
 	
 	var collision_rids: Array[RID] = []
 	
-	var results: Array[TargetNodeData] = [TargetNodeData.new(camera_3d, camera_3d.global_position, ORIGIN_POS_NAME)]
+	var results: Array[TargetNodeData] = [TargetNodeData.new(camera_3d, camera_3d.global_position, false, ORIGIN_POS_NAME)]
 	
 	for i in RAY_3D_MAX_ITERATIONS:
 		var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(start, end)
 		query.exclude = collision_rids
 		var collision_result: Dictionary = space_state.intersect_ray(query)
 		if collision_result.has("collider"):
-			results.append(TargetNodeData.new(collision_result["collider"] as Node, collision_result["position"]))
+			results.append(TargetNodeData.new(collision_result["collider"] as Node, collision_result["position"], false))
 			collision_rids.append(collision_result["rid"] as RID)
 		else:
 			break

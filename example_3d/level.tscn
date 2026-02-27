@@ -81,7 +81,6 @@ layer = 2
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1819430564]
 layer = 3
-visible = false
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD" unique_id=161741393]
 anchors_preset = 2

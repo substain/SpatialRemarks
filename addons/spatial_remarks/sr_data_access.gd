@@ -1,3 +1,4 @@
+@tool
 class_name SRDataAccess
 extends Node
 
@@ -63,22 +64,21 @@ const CFG_OVERRIDE_PATH: String = "user://spatial_remarks/sr_config_override.cfg
 const PROJECT_SETTINGS_IDENTIFIER: String = "[project]"
 
 static func load_sr_data(config: Config) -> Array[SRData]:
-	print("loading sr data..")
-
 	var current_sr_data: Array[SRData] = []
 	match config.data_source_type:
-		DataSourceType.JSON: current_sr_data = _load_srd_from_json_files(config)
+		DataSourceType.JSON: current_sr_data = load_srd_from_json_file(config.data_location)
 	
 		_: push_warning("SRDataHandler: No handling implemented for data source type '", DataSourceType.keys()[config.data_source_type], "'. Saving data ignored.")
 	return current_sr_data
 
-static func _load_srd_from_json_files(config: Config) -> Array[SRData]:	
-	if !FileAccess.file_exists(config.data_location):
-		print("SRDataHandler: No spatial remark data found at '", config.data_location ,"'")
+#TODO: test this with export. possibly remarks within the project are not included in the export due to default settings
+static func load_srd_from_json_file(json_path: String) -> Array[SRData]:
+	if !FileAccess.file_exists(json_path):
+		print("SRDataHandler: No spatial remark data found at '", json_path ,"'")
 		return []# We don't have a file to load.
 	
 	var res: Array[SRData] = []
-	var json_file_access: FileAccess = FileAccess.open(config.data_location, FileAccess.READ)
+	var json_file_access: FileAccess = FileAccess.open(json_path, FileAccess.READ)
 	
 	while json_file_access.get_position() < json_file_access.get_length():
 		var json_string: String = json_file_access.get_line()
@@ -92,7 +92,7 @@ static func _load_srd_from_json_files(config: Config) -> Array[SRData]:
 		res.append_array(sr_data_from_json)
 		
 	json_file_access.close()
-	print("SRDataHandler: loaded ", res.size(), " spatial remark(s).")
+	print("SRDataHandler: loaded ", res.size(), " spatial remark " + ("s" if res.size() != 1 else "") + ".")
 
 	return res
 
@@ -131,7 +131,6 @@ static func prepare_path(target_path: String) -> bool:
 	return true
 	
 static func load_config() -> Config:
-	print("loading config..")
 	var config: Config = Config.get_default(get_plugin_path())
 	
 	var default_filepath: String = get_plugin_path() + DEFAULT_ADDON_CFG_PATH

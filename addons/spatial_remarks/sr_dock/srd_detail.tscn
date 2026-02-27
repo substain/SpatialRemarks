@@ -37,10 +37,10 @@ text_edit = NodePath("TextEdit")
 layout_mode = 2
 
 [node name="InfoBar" type="RichTextLabel" parent="VBoxContainer" unique_id=840854273]
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(180, 150)
 layout_mode = 2
 bbcode_enabled = true
-text = "Position: 
+text = "Position: xxxxxxxxx
 Position: 
 Position: 
 Position: 
@@ -55,19 +55,22 @@ alignment = 1
 [node name="SaveButton" type="Button" parent="VBoxContainer/ButtonHBC" unique_id=162362286]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_mskb4")
-disabled = true
 text = "Save"
 
 [node name="DeleteButton" type="Button" parent="VBoxContainer/ButtonHBC" unique_id=1432003031]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_0qdlq")
-disabled = true
 text = "Delete"
 
+[node name="CloseButton" type="Button" parent="VBoxContainer/ButtonHBC" unique_id=1563008916]
+layout_mode = 2
+text = "Close"
+
 [node name="TextEdit" type="TextEdit" parent="." unique_id=1644379068]
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="pressed" from="VBoxContainer/ButtonHBC/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBC/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonHBC/CloseButton" to="." method="_on_close_button_pressed"]

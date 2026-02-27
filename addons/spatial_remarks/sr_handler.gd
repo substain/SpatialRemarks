@@ -117,7 +117,7 @@ func _add_sr_node_to_tree(srd: SRData) -> void:
 	
 	_sr_data_parent.add_child(target_node)
 	_sr_data[srd] = target_node
-	target_node.init(srd)
+	target_node.init(srd, _config.collision_layer_number, false)
 
 func show_sr_note(srd: SRData) -> void:
 	sr_ingame_overlay.show_remark(srd)

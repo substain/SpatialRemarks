@@ -53,6 +53,7 @@ alignment = 2
 [connection signal="pressed" from="VBoxContainer/ButtonHBC/ColumnButton" to="." method="_on_column_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBC/RefreshButton" to="." method="_on_refresh_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBC/ImportButton" to="." method="_on_import_button_pressed"]
+[connection signal="jump_entry" from="VBoxContainer/SRDataTable" to="." method="_on_sr_data_table_jump_entry"]
 [connection signal="select_entry" from="VBoxContainer/SRDataTable" to="." method="_on_sr_table_select_entry"]
 [connection signal="delete_srd" from="VBoxContainer/SRDDetail" to="." method="_on_srd_detail_delete_srd"]
 [connection signal="save_srd" from="VBoxContainer/SRDDetail" to="." method="_on_srd_detail_save_srd"]

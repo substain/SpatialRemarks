@@ -11,7 +11,9 @@ const HOVER_IN_SCENE_COLOR: Color = Color("182b1d99")
 const SELECTED_IN_SCENE_COLOR: Color = Color("2a3d2fb1")
 
 const TEXT_SIZE_OFFSET: int = 40
+
 signal select_entry(srd: SRData)
+signal jump_selection(srd: SRData)
 
 @export var _selected_color: Color
 
@@ -69,6 +71,9 @@ func get_column(column: SRDataTable.Column) -> Label:
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var iemb: InputEventMouseButton = event as InputEventMouseButton
+		if iemb.double_click:
+			jump_selection.emit(srdata)
+		
 		if iemb.pressed && iemb.button_index == MOUSE_BUTTON_LEFT:
 			select_entry.emit(srdata)
 

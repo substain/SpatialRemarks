@@ -2,8 +2,6 @@
 class_name SRDataTable
 extends VBoxContainer
 
-signal select_entry(srd: SRData)
-
 enum Column {
 	AUTHOR,
 	VERSION,
@@ -14,6 +12,9 @@ enum Column {
 }
 
 const RESIZE_OFFSET: int = 100
+
+signal select_entry(srd: SRData)
+signal jump_entry(srd: SRData)
 
 @export var _content_vbc: VBoxContainer
 @export var _sr_data_row: PackedScene
@@ -74,7 +75,7 @@ func _add_sr_data_row(from_srd: SRData) -> SRDataRow:
 
 	_sr_data[from_srd] = srdr
 	srdr.select_entry.connect(_on_select_entry)
-	
+	srdr.jump_selection.connect(_on_jump_to_entry)
 	return srdr
 	
 func _sort_by_col_size(a: int, b: int) -> bool:
@@ -177,6 +178,9 @@ func _set_column_visible(col: Column, is_visible_new: bool, initial: bool = fals
 
 func _on_select_entry(srd: SRData) -> void:
 	select_entry.emit(srd)
+
+func _on_jump_to_entry(srd: SRData) -> void:
+	jump_entry.emit(srd)
 
 func set_selected(srd: SRData, is_selected_new: bool) -> void:
 	if !_sr_data.has(srd):

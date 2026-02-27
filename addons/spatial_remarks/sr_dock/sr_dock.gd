@@ -2,6 +2,9 @@
 class_name SRDock
 extends PanelContainer
 
+const CAMERA_NOTE_VIEW_DISTANCE: float = 8.0
+const CAMERA_MOVE_TIME: float = 0.35
+
 const SR_NOTE_SCENE_PATH: String = "/sr_note.tscn"
 
 static var _sr_note_scene: PackedScene
@@ -22,6 +25,8 @@ var _selected_srd: SRData = null
 var _is_dock_child: bool = false
 var _file_dialog: EditorFileDialog
 var col_selection: PopupMenu
+
+var jump_node_tween: Tween = null
 
 func _ready() -> void:
 	_sr_note_scene = load(SRDataAccess.get_plugin_path() + SR_NOTE_SCENE_PATH) as PackedScene
@@ -147,7 +152,7 @@ func _on_import_button_pressed() -> void:
 	#_file_dialog.visible = true
 
 	#_file_dialog.popup_centered()
-
+	
 func _do_import_from_paths(paths: PackedStringArray) -> void:
 	var added_data: Array[SRData] = []
 	
@@ -207,3 +212,31 @@ func _toggle_col_selection(col_idx: int) -> void:
 		
 func _on_srd_detail_unselect_srd() -> void:
 	_on_unselect_entry()
+
+func _on_sr_data_table_jump_entry(srd: SRData) -> void:
+	move_camera_to_node(srd)
+
+func move_camera_to_node(srd: SRData) -> void:
+	# 3D handling. May need to change if 2D needs to be handled as well
+	if !EditorInterface.get_edited_scene_root() is Node3D:
+		return
+	
+	#if srd.scene != EditorInterface.get_edited_scene_root().scene_file_path:
+	if !_instantiated_nodes.has(srd):
+		return
+	
+	var cam3d: Camera3D = EditorInterface.get_editor_viewport_3d().get_camera_3d()
+	if cam3d == null:
+		return
+	
+	if is_instance_valid(jump_node_tween):
+		jump_node_tween.kill()
+	
+	jump_node_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	
+	var lookat: Vector3 = cam3d.global_transform.basis.z.normalized() * CAMERA_NOTE_VIEW_DISTANCE
+	var target_position: Vector3 = srd.global_position + lookat
+
+	jump_node_tween.tween_property(cam3d, "global_position", target_position, CAMERA_MOVE_TIME)
+	
+	#cam3d.global_position = Vector3.ZERO

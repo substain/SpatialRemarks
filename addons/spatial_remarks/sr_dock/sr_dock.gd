@@ -27,19 +27,24 @@ var _file_dialog: EditorFileDialog
 var col_selection: PopupMenu
 
 var jump_node_tween: Tween = null
+var editor_selection: EditorSelection
 
 func _ready() -> void:
+
 	_sr_note_scene = load(SRDataAccess.get_plugin_path() + SR_NOTE_SCENE_PATH) as PackedScene
-
 	_srd_detail.visible = false
+	_config = SRDataAccess.load_config()
+	
+	if !get_parent() is EditorDock:
+#		print("no editor dock parent - resized not connected")
+		return
 
-	update_sr_data(true)
+	update_sr_data()
 
-	if get_parent() is EditorDock:
-		_is_dock_child = true
-		(get_parent() as EditorDock).resized.connect(_on_resized)
-	else:
-		print("no editor dock parent - resized not connected")
+	_is_dock_child = true
+	(get_parent() as EditorDock).resized.connect(_on_resized)
+	editor_selection = EditorInterface.get_selection()
+	editor_selection.selection_changed.connect(on_selection_changed)
 	
 func scene_changed() -> void:
 	update_sr_data()
@@ -47,7 +52,10 @@ func scene_changed() -> void:
 func update_sr_data(reload_config: bool = false) -> void:
 	if reload_config:
 		_config = SRDataAccess.load_config()
-	
+		
+	if get_parent() is EditorDock:
+		_is_dock_child = true
+
 	_sr_data_ar = SRDataAccess.load_sr_data(_config)
 		
 	_sr_data_table.update_sr_data(_sr_data_ar)
@@ -86,7 +94,8 @@ func _add_sr_node_to_scene(from_srd: SRData) -> void:
 		return
 		
 	var target_node: SRNote = _sr_note_scene.instantiate() as SRNote
-	_node_in_scene.add_child(target_node)
+	_node_in_scene.add_child(target_node, false, InternalMode.INTERNAL_MODE_FRONT)
+	target_node.owner = EditorInterface.get_edited_scene_root()
 	_instantiated_nodes[from_srd] = target_node
 	target_node.init(from_srd, 0, true)
 	
@@ -228,15 +237,66 @@ func move_camera_to_node(srd: SRData) -> void:
 	var cam3d: Camera3D = EditorInterface.get_editor_viewport_3d().get_camera_3d()
 	if cam3d == null:
 		return
-	
+		
+	var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
+	var focus_shortcut: Shortcut = editor_settings.get_shortcut("spatial_editor/focus_selection")
+	var focus_event: InputEvent = focus_shortcut.events[0] if focus_shortcut.events.size() > 0 else null
+	var selected_nodes: Array[Node] = editor_selection.get_selected_nodes()
+
+	if focus_event != null:
+		editor_selection.clear()
+		editor_selection.add_node(_instantiated_nodes[srd])
+		focus_event.pressed = true
+		Input.parse_input_event(focus_event)	#
+	else:
+		jump_node_local(cam3d, srd.global_position)
+		
+	await get_tree().create_timer(0.25).timeout
+	#editor_selection.clear()
+	var target_node_path: String = srd.target_node
+	var has_target_node: bool = EditorInterface.get_edited_scene_root().has_node(target_node_path)
+	if has_target_node:
+		var target_node: Node = EditorInterface.get_edited_scene_root().get_node(target_node_path)
+		editor_selection.add_node(target_node)
+		#EditorInterface.get_inspector().edit(target_node)
+
+func jump_node_local(cam3d: Camera3D, srd_pos: Vector3) -> void:
 	if is_instance_valid(jump_node_tween):
 		jump_node_tween.kill()
-	
+
 	jump_node_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	
 	var lookat: Vector3 = cam3d.global_transform.basis.z.normalized() * CAMERA_NOTE_VIEW_DISTANCE
-	var target_position: Vector3 = srd.global_position + lookat
+	var target_position: Vector3 = srd_pos + lookat
 
 	jump_node_tween.tween_property(cam3d, "global_position", target_position, CAMERA_MOVE_TIME)
 	
-	#cam3d.global_position = Vector3.ZERO
+	cam3d.global_position = Vector3.ZERO
+
+func on_selection_changed() -> void:
+	var editor_selection_new: Array[Node] = editor_selection.get_selected_nodes()
+
+	var non_sr_nodes: Array[Node] = []
+	var sr_notes: Array[SRNote] = []
+		
+	for s_node: Node in editor_selection_new:
+		if s_node is SRNote:
+			sr_notes.append(s_node as SRNote)
+		else:
+			non_sr_nodes.append(s_node)
+			
+	var inspector: EditorInspector = EditorInterface.get_inspector()
+	if !sr_notes.is_empty():
+		var last_selection: SRNote = sr_notes[sr_notes.size()-1] as SRNote
+		var srd: SRData = _instantiated_nodes.find_key(last_selection)
+		_on_select_entry(srd)
+		if non_sr_nodes.is_empty():
+			#var target_node_path: String = srd.target_node
+			#var has_target_node: bool = EditorInterface.get_edited_scene_root().has_node(target_node_path)
+			#if has_target_node:
+				#var target_node: Node = EditorInterface.get_edited_scene_root().get_node(target_node_path)
+				#inspector.edit(target_node)
+			#else:
+			inspector.edit(null)
+	else:
+		return

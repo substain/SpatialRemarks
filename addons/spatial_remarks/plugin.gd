@@ -20,12 +20,17 @@ func _enable_plugin() -> void:
 	EditorInterface.set_plugin_enabled("spatial_remarks/sr_dock", true)
 	print("Addon enabled.")
 
+	ProjectSettings.save()
+	EditorInterface.restart_editor(true)
+	
 func _disable_plugin() -> void:
 	remove_autoloads()
 	remove_inputs()
 	EditorInterface.set_plugin_enabled("spatial_remarks/sr_dock", false)
-
 	print("Addon disabled.")
+
+	ProjectSettings.save()
+	EditorInterface.restart_editor(true)
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint():
@@ -90,9 +95,9 @@ static func input_key(key_code: Key) -> InputEventKey:
 	var in_event_key: InputEventKey = InputEventKey.new()
 	in_event_key.keycode = key_code
 	return in_event_key
-
-func _handles(object: Object) -> bool:
-	return true
+#
+#func _handles(object: Object) -> bool:
+	#return true
 #
 #func _forward_canvas_gui_input(event: InputEvent) -> bool:
 	#if event is InputEventMouseButton:
@@ -108,8 +113,8 @@ func _handles(object: Object) -> bool:
 	## Draw a circle at the cursor's position.
 	#overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
 	#print("forward canvas")
-
-func add_container() -> void:
-	var container: Node = Node.new()
-	
+#
+#func add_container() -> void:
+	#var container: Node = Node.new()
+	#
 	#add_dock()

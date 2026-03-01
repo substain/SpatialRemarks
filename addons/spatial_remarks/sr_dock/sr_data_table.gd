@@ -71,7 +71,12 @@ func _add_sr_data_row(from_srd: SRData) -> SRDataRow:
 	var srdr: SRDataRow = _sr_data_row.instantiate()
 	_content_vbc.add_child(srdr)
 	srdr.init(from_srd)
-	srdr.set_active_scene(from_srd.scene == EditorInterface.get_edited_scene_root().scene_file_path)
+	
+	var is_active_scene: bool = false
+	if is_instance_valid(EditorInterface.get_edited_scene_root()):
+		is_active_scene = from_srd.scene == EditorInterface.get_edited_scene_root().scene_file_path
+		
+	srdr.set_active_scene(is_active_scene)
 
 	_sr_data[from_srd] = srdr
 	srdr.select_entry.connect(_on_select_entry)

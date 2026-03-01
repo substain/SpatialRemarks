@@ -69,9 +69,10 @@ material = SubResource("StandardMaterial3D_xx07f")
 size = Vector3(3, 1, 3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4x5ht"]
-size = Vector3(50, 5, 100)
+size = Vector3(70, 5, 50)
 
 [node name="Level" type="Node3D" unique_id=82279985]
+transform = Transform3D(1, 0, 0, 0, 0.999904, -0.013857471, 0, 0.013857471, 0.999904, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=713345809]
 environment = SubResource("Environment_u77to")
@@ -125,15 +126,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0)
 shape = SubResource("BoxShape3D_xx07f")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=1102325315]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0012807846, -0.03528261, 0.07500086)
 mesh = SubResource("BoxMesh_xx07f")
 
-[node name="TriggerArea" type="Area3D" parent="." unique_id=298260931 node_paths=PackedStringArray("plattform1", "plattform2")]
+[node name="TriggerArea" type="Area3D" parent="." unique_id=298260931 node_paths=PackedStringArray("platform1", "platform2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.469816, 0.9027748, 13.7)
 collision_layer = 3
 collision_mask = 2
 script = ExtResource("3_jfm4q")
-plattform1 = NodePath("../Plattform1")
-plattform2 = NodePath("../Plattform2")
+platform1 = NodePath("../Platform1")
+platform2 = NodePath("../Platform2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerArea" unique_id=41149245]
 shape = SubResource("CylinderShape3D_xx07f")
@@ -168,43 +170,44 @@ mesh = SubResource("BoxMesh_u77to")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BlueCube" unique_id=1962898936]
 shape = SubResource("BoxShape3D_jfm4q")
 
-[node name="Plattform1" type="RigidBody3D" parent="." unique_id=1611480879]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7, -0.5, 17)
+[node name="Platform1" type="RigidBody3D" parent="." unique_id=1611480879]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.729226, -0.4821922, 18.284943)
 collision_layer = 2
 collision_mask = 2
 gravity_scale = 0.0
 lock_rotation = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Plattform1" unique_id=1708479258]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform1" unique_id=1708479258]
 shape = SubResource("BoxShape3D_u77to")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Plattform1" unique_id=286258349]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform1" unique_id=286258349]
 mesh = SubResource("BoxMesh_4x5ht")
 
-[node name="Plattform2" type="RigidBody3D" parent="." unique_id=1093822885]
+[node name="Platform2" type="RigidBody3D" parent="." unique_id=1093822885]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0999997, -0.5, 12.499999)
 collision_layer = 2
 collision_mask = 2
 gravity_scale = 0.0
 lock_rotation = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Plattform2" unique_id=1143585137]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform2" unique_id=1143585137]
 shape = SubResource("BoxShape3D_u77to")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Plattform2" unique_id=1921087601]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform2" unique_id=1921087601]
 mesh = SubResource("BoxMesh_4x5ht")
 
-[node name="Plattform3" type="RigidBody3D" parent="." unique_id=1702673693]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 6, 22.5)
+[node name="Platform3" type="RigidBody3D" parent="." unique_id=1702673693]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 4.22989, 24.680779)
 collision_layer = 2
 collision_mask = 2
 gravity_scale = 0.0
 lock_rotation = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Plattform3" unique_id=2088210072]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform3" unique_id=2088210072]
 shape = SubResource("BoxShape3D_u77to")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Plattform3" unique_id=2138040284]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform3" unique_id=2138040284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.021289825, -0.058995724, 0.03208351)
 mesh = SubResource("BoxMesh_4x5ht")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=238893526]

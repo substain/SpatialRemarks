@@ -14,11 +14,10 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="SpatialRemarkOverlay" type="CanvasLayer" unique_id=1762695129 node_paths=PackedStringArray("_panel_container", "_title_rtl", "_content_rtl")]
+[node name="SpatialRemarkOverlay" type="CanvasLayer" unique_id=1762695129 node_paths=PackedStringArray("_panel_container", "_content_rtl")]
 layer = 100
 script = ExtResource("1_8g51h")
 _panel_container = NodePath("MarginContainer/PanelContainer")
-_title_rtl = NodePath("MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TitleRTL")
 _content_rtl = NodePath("MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ContentRTL")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1217962904]
@@ -48,18 +47,6 @@ theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" unique_id=738483545]
-layout_mode = 2
-
-[node name="TitleRTL" type="RichTextLabel" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1280862836]
-visible = false
-layout_mode = 2
-theme_override_colors/default_color = Color(0.19219694, 0.19219697, 0.19219697, 1)
-bbcode_enabled = true
-text = "[b]Title[/b]"
-fit_content = true
-
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1728849380]
-visible = false
 layout_mode = 2
 
 [node name="ContentRTL" type="RichTextLabel" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1072175676]

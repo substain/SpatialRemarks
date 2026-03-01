@@ -92,7 +92,7 @@ static func load_srd_from_json_file(json_path: String) -> Array[SRData]:
 		res.append_array(sr_data_from_json)
 		
 	json_file_access.close()
-	print("SRDataHandler: loaded ", res.size(), " spatial remark " + ("s" if res.size() != 1 else "") + ".")
+	print("SRDataHandler: loaded ", res.size(), " spatial remark" + ("s" if res.size() != 1 else "") + ".")
 
 	return res
 
@@ -117,10 +117,10 @@ static func _save_srd_to_json_file(config: Config, sr_data: Array[SRData]) -> vo
 	print("SRDataHandler: saved ", sr_data.size(), " spatial remark(s).")
 
 static func prepare_path(target_path: String) -> bool:
-	if target_path.begins_with("res://"):
+	#if target_path.begins_with("res://"):
 		# This is to avoid issues with exported folder locations.
-		push_error("SRDataHandler: saving to 'res://' paths is not supported (used path: '", target_path, "')")
-		return false
+		#push_error("SRDataHandler: saving to 'res://' paths is not supported (used path: '", target_path, "')")
+		#return false
 		
 	var dir_end_idx: int = max(target_path.rfind("\\"), target_path.rfind("/")) + 1
 	var target_dir: String = target_path.substr(0, dir_end_idx)

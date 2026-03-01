@@ -3,7 +3,7 @@ extends CharacterBody3D
 @export var camera_3d: Camera3D
 
 const SPEED = 12.0
-const JUMP_VELOCITY = 7.5
+const JUMP_VELOCITY = 7
 const MOUSE_SENSITIVITY = 0.005
 const MIN_X_ANGLE_DEGREE: float = -100
 const MAX_X_ANGLE_DEGREE: float = 100

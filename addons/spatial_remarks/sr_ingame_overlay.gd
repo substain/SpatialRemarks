@@ -1,7 +1,6 @@
 class_name SRIngameOverlay extends CanvasLayer
 
 @export var _panel_container: PanelContainer
-@export var _title_rtl: RichTextLabel
 @export var _content_rtl: RichTextLabel
 
 func _ready() -> void:
@@ -11,9 +10,7 @@ func _ready() -> void:
 	#pass
 
 func show_remark(srd: SRData) -> void:
-	print("show remark")
 	_panel_container.visible = true
-	_title_rtl.text = srd.author
 	_content_rtl.text = srd.text + "\n[i]~" + srd.author + "[/i]"
 
 func hide_remark() -> void:

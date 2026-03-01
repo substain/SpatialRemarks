@@ -23,7 +23,7 @@ func _enter_tree():
 
 	add_dock(dock)
 	scene_changed.connect(_on_scene_changed)
-
+	
 func _exit_tree():
 	_sr_dock.cleanup_nodes()
 	remove_dock(dock)
@@ -32,20 +32,23 @@ func _exit_tree():
 
 	scene_changed.disconnect(_on_scene_changed)
 	scene_closed
-
+	
 func _on_scene_changed(_node) -> void:
 	_sr_dock.scene_changed()
 
 static func get_dock_plugin_path() -> String:
 	return SRDataAccess.get_plugin_path() + DOCK_FOLDER
-	
-#
+
+
+#func _handles(object: Object) -> bool:
+	#return object is SRNote
+##
 #func _get_gizmo_name():
 	#return "SpatialRemarks3D"
-	#
+	##
 #func _has_gizmo(node):
-	#return true
-	#
+	#return node is SRNote
+	##
 #
 #func _init():
 	#pass
@@ -86,6 +89,4 @@ static func get_dock_plugin_path() -> String:
 	#
 #func _get_handle_value(gizmo: EditorNode3DGizmo, handle_id: int, secondary: bool) -> Variant:
 	#return 99
-
-#func _handles(object: Object) -> bool:
-#	return object is Node3D
+#

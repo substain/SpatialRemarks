@@ -121,7 +121,7 @@ func _on_create_pressed() -> void:
 	if _config.target_node_selectable:
 		var idx: int = _target_object_option_button.selected
 		if idx >= 0:
-			_remark_to_create.target_node = _possible_targets[idx].target_name
+			_remark_to_create.target_node = get_viewport().get_tree().current_scene.get_path_to(_possible_targets[idx].node)
 			_remark_to_create.global_position = _possible_targets[idx].target_position
 			_remark_to_create.is_2d = _possible_targets[idx].is_2d
 

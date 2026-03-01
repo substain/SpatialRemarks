@@ -18,6 +18,8 @@ var sr_ingame_overlay: SRIngameOverlay
 var _currently_paused: bool
 var _current_mouse_mode: Input.MouseMode
 
+var _previous_mouse_pos: Vector2
+
 var _start_remark_callback: Callable = Callable(_default_start_remark_callback)
 var _end_remark_callback: Callable = Callable(_default_end_remark_callback)
 
@@ -28,6 +30,8 @@ func _ready() -> void:
 	_sr_creation_scene = load(SRDataAccess.get_plugin_path() + SR_CREATION_SCENE_PATH) as PackedScene
 	_sr_note_scene = load(SRDataAccess.get_plugin_path() + SR_NOTE_SCENE_PATH) as PackedScene
 	_sr_ingame_overlay_scene = load(SRDataAccess.get_plugin_path() + SR_IG_OVERLAY_SCENE_PATH) as PackedScene
+
+	_previous_mouse_pos = get_viewport().get_mouse_position()
 
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_config = SRDataAccess.load_config()
@@ -40,6 +44,10 @@ func init(srds: Array[SRData]) -> void:
 	_sr_data_parent.name = "SpatialRemarks"
 	_sr_data_parent.visible = remarks_visible
 	get_tree().current_scene.add_child(_sr_data_parent)
+
+
+	#var sr_raycast: RayCast3D = 
+#_sr_data_parent.add_child()
 	
 	sr_ingame_overlay = _sr_ingame_overlay_scene.instantiate() as SRIngameOverlay
 	_sr_data_parent.add_child(sr_ingame_overlay)
@@ -50,6 +58,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("create_sr"):
 		start_remark_input()
 	elif event.is_action_pressed("show_sr"):
+
 		set_remarks_visible(!remarks_visible)
 	
 func set_author(author_new: String) -> void:
@@ -99,9 +108,17 @@ func set_remarks_visible(visible_new: bool) -> void:
 		return
 	_sr_data_parent.visible = visible_new
 	remarks_visible = visible_new
-	if !remarks_visible:
+	if !visible_new:
+		_previous_mouse_pos = get_viewport().get_mouse_position()
+
+		Input.mouse_mode = _current_mouse_mode
 		hide_sr_note()
-		
+	else:
+		var mouse_position: Vector2 = get_viewport().get_mouse_position()
+		_current_mouse_mode = Input.mouse_mode
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		get_viewport().warp_mouse(_previous_mouse_pos) #TODO is this really better?
+
 func get_collision_layer_number() -> int:
 	return _config.collision_layer_number
 

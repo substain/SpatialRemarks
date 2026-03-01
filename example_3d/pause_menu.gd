@@ -16,8 +16,7 @@ func set_paused(is_paused_new: bool) -> void:
 	
 	get_tree().paused = is_paused_new
 	visible = is_paused_new
-	#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if is_paused_new else Input.MOUSE_MODE_CAPTURED
-
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if is_paused_new else Input.MOUSE_MODE_CAPTURED
 
 func _on_continue_button_pressed() -> void:
 	set_paused(false)

@@ -158,10 +158,10 @@ static func _get_node_name(node: Node) -> String:
 	return node.name
 	
 func _query_possible_targets(config: SRDataAccess.Config) -> Array[TargetNodeData]:
-	if get_viewport().get_camera_3d() != null:
+	if SRHandler.is_active_3d():
 		return _query_possible_targets_3d(config, get_viewport())
 		
-	if get_viewport().get_camera_2d() != null:
+	if SRHandler.is_active_2d():
 		return _query_possible_targets_2d(config, get_viewport())
 		
 	return _query_possible_targets_no_camera(config, get_viewport())
@@ -173,11 +173,11 @@ static func _query_possible_targets_no_camera(config: SRDataAccess.Config, _view
 	return []
 
 static func _query_possible_targets_2d(config: SRDataAccess.Config, _viewport: Viewport) -> Array[TargetNodeData]:
-	var camera_2d: Camera2D = _viewport.get_camera_2d()
+	var camera_2d: Camera2D = SRHandler.get_current_camera_2d()
 	return []
 	
 static func _query_possible_targets_3d(config: SRDataAccess.Config, _viewport: Viewport) -> Array[TargetNodeData]:
-	var camera_3d: Camera3D = _viewport.get_camera_3d()
+	var camera_3d: Camera3D = SRHandler.get_current_camera_3d()
 	var space_state: PhysicsDirectSpaceState3D = _viewport.get_world_3d().direct_space_state
 	#var look_dir: Vector3 = -camera_3d.global_transform.basis.z.normalized()
 	#var start: Vector3 = camera_3d.global_position + look_dir * RAY_3D_MIN_OFFSET

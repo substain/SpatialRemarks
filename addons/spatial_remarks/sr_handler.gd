@@ -28,6 +28,9 @@ var _end_remark_callback: Callable = Callable(_default_end_remark_callback)
 var remark_input_active: bool = false
 var remarks_visible: bool = false
 
+var _active_camera_2d: Camera2D
+var _active_camera_3d: Camera3D
+
 func _ready() -> void:
 	_sr_creation_scene = load(SRDataAccess.get_plugin_path() + SR_CREATION_SCENE_PATH) as PackedScene
 	_sr_note_scene = load(SRDataAccess.get_plugin_path() + SR_NOTE_SCENE_PATH) as PackedScene
@@ -114,7 +117,6 @@ func set_remarks_visible(visible_new: bool) -> void:
 	if !visible_new:
 		hide_sr_note()
 
-	
 	if _config.use_raycast_for_display:
 		set_raycast_for_sr_notes(visible_new)
 	else:
@@ -145,17 +147,17 @@ func hide_sr_note() -> void:
 	_sr_ingame_overlay.hide_remark()
 	
 func set_raycast_for_sr_notes(is_visible_new: bool) -> void:
-	if !is_visible_new:
-		if get_viewport().get_camera_3d() == null:
+	if is_visible_new:
+		var current_cam: Camera3D = get_current_camera_3d()
+		if current_cam == null:
 			push_warning("no camera3d found!")
 			return
-		var camera_3d: Camera3D = get_viewport().get_camera_3d()
+		var camera_3d: Camera3D = current_cam
 		_view_sr_raycast = _view_sr_raycast_scene.instantiate() as ViewSRRaycast
 		camera_3d.add_child(_view_sr_raycast)
 	else:
 		if _view_sr_raycast != null:
 			_view_sr_raycast.queue_free()
-	
 	
 func show_mouse_for_sr_notes(is_visible_new: bool) -> void:
 	if !is_visible_new:
@@ -168,3 +170,44 @@ func show_mouse_for_sr_notes(is_visible_new: bool) -> void:
 		_current_mouse_mode = Input.mouse_mode
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		get_viewport().warp_mouse(_previous_mouse_pos) #TODO is this really better?
+
+func set_active_camera_3d(active_camera_3d_new: Camera3D) -> void:
+	var is_same_camera: bool = _active_camera_3d == active_camera_3d_new
+	_active_camera_3d = active_camera_3d_new
+	
+	if !is_same_camera && _config.use_raycast_for_display && remarks_visible && _active_camera_3d != null:
+		_view_sr_raycast.queue_free()
+		_view_sr_raycast = _view_sr_raycast_scene.instantiate() as ViewSRRaycast
+		_active_camera_3d.add_child(_view_sr_raycast)
+		
+func get_current_camera_3d() -> Camera3D:
+	if _active_camera_3d != null:
+		return _active_camera_3d
+	
+	return get_viewport().get_camera_3d()
+	
+func set_active_camera_2d(active_camera_2d_new: Camera2D) -> void:
+	var is_same_camera: bool = _active_camera_2d == active_camera_2d_new
+	_active_camera_2d = active_camera_2d_new
+
+func get_current_camera_2d() -> Camera2D:
+	if _active_camera_2d != null:
+		return _active_camera_2d
+	
+	return get_viewport().get_camera_2d()
+
+func is_active_3d() -> bool:
+	if _active_camera_3d != null:
+		return true
+	if _active_camera_2d != null:
+		return false
+		
+	return get_viewport().get_camera_3d() != null
+
+func is_active_2d() -> bool:
+	if _active_camera_2d != null:
+		return true
+	if _active_camera_3d != null:
+		return false
+		
+	return get_viewport().get_camera_2d() != null

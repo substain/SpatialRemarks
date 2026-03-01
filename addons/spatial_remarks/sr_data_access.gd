@@ -33,6 +33,7 @@ class Config:
 	
 	# Display
 	var collision_layer_number: int
+	var use_raycast_for_display: bool
 	
 	static func get_default(plugin_path: String) -> Config:
 		var default_config: Config = Config.new()
@@ -48,6 +49,7 @@ class Config:
 		default_config.target_node_selectable = false
 		default_config.category_selectable = false
 		default_config.collision_layer_number = 32
+		default_config.use_raycast_for_display = false
 		
 		return default_config
 		
@@ -200,6 +202,10 @@ static func _update_config_from_path(config: Config, path: String) -> void:
 	var collision_layer_number: String = _load_value(config_file, "display", "collision_layer_number")
 	if !collision_layer_number.is_empty():
 		config.collision_layer_number = str_to_var(collision_layer_number)
+
+	var use_raycast_for_display: String = _load_value(config_file, "display", "use_raycast_for_display")
+	if !use_raycast_for_display.is_empty():
+		config.use_raycast_for_display = str_to_var(use_raycast_for_display)
 
 static func _load_value(config: ConfigFile, config_section: String, config_value: String, project_settings_path: String = "") -> String:
 	var cfg_value: Variant = config.get_value(config_section, config_value, "")

@@ -284,7 +284,7 @@ func on_selection_changed() -> void:
 			sr_notes.append(s_node as SRNote)
 		else:
 			non_sr_nodes.append(s_node)
-			
+
 	var inspector: EditorInspector = EditorInterface.get_inspector()
 	if !sr_notes.is_empty():
 		var last_selection: SRNote = sr_notes[sr_notes.size()-1] as SRNote

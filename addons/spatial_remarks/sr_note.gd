@@ -1,11 +1,10 @@
 @tool
 class_name SRNote
-extends Node3D
+extends Area3D
 
 @export var _note_empty: CompressedTexture2D
 @export var _note_visible: CompressedTexture2D
 @export var _sprite_3d: Sprite3D
-@export var _area_3d: Area3D
 
 var _sr_data: SRData
 
@@ -15,9 +14,9 @@ func init(sr_data: SRData, target_collision_layer_number: int, is_in_editor_new:
 	is_in_editor = is_in_editor_new
 	_sr_data = sr_data	
 	global_position = sr_data.global_position
-	_area_3d.collision_layer = 0
+	collision_layer = 0
 	if target_collision_layer_number > 0:
-		_area_3d.set_collision_layer_value(target_collision_layer_number, true)
+		set_collision_layer_value(target_collision_layer_number, true)
 	#modulate = SRHandler.get_color_by_category(sr_data.category)
 
 func set_highlighted(is_highlighted: bool) -> void:
@@ -30,8 +29,9 @@ func set_highlighted(is_highlighted: bool) -> void:
 		if !is_in_editor:
 			SRHandler.hide_sr_note()
 
-func _on_area_3d_mouse_entered() -> void:
+func _on_mouse_entered() -> void:
 	set_highlighted(true)
-	
-func _on_area_3d_mouse_exited() -> void:
+
+
+func _on_mouse_exited() -> void:
 	set_highlighted(false)

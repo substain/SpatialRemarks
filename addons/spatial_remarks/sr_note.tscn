@@ -7,26 +7,24 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_pvsh3"]
 radius = 0.8
 
-[node name="SRNote" type="Node3D" unique_id=1656796569 node_paths=PackedStringArray("_sprite_3d", "_area_3d")]
+[node name="SRNote" type="Area3D" unique_id=870001438 node_paths=PackedStringArray("_sprite_3d", "_area_3d")]
+collision_layer = 2147483648
+collision_mask = 2147483648
+collision_priority = 2.0
+priority = 5
 script = ExtResource("1_c1apw")
 _note_empty = ExtResource("3_pvsh3")
 _note_visible = ExtResource("1_1q0uc")
 _sprite_3d = NodePath("Sprite3D")
-_area_3d = NodePath("Area3D")
-
-[node name="Area3D" type="Area3D" parent="." unique_id=1490178257]
-collision_layer = 8388608
-collision_mask = 8388608
-collision_priority = 2.0
-priority = 5
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=572163169]
-shape = SubResource("SphereShape3D_pvsh3")
+_area_3d = NodePath("")
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=226505692]
 billboard = 1
 no_depth_test = true
 texture = ExtResource("1_1q0uc")
 
-[connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
-[connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=572163169]
+shape = SubResource("SphereShape3D_pvsh3")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

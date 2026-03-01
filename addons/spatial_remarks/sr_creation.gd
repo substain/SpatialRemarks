@@ -177,15 +177,15 @@ static func _query_possible_targets_2d(config: SRDataAccess.Config, _viewport: V
 	return []
 	
 static func _query_possible_targets_3d(config: SRDataAccess.Config, _viewport: Viewport) -> Array[TargetNodeData]:
-	var camera_3d = _viewport.get_camera_3d()
+	var camera_3d: Camera3D = _viewport.get_camera_3d()
 	var space_state: PhysicsDirectSpaceState3D = _viewport.get_world_3d().direct_space_state
 	#var look_dir: Vector3 = -camera_3d.global_transform.basis.z.normalized()
 	#var start: Vector3 = camera_3d.global_position + look_dir * RAY_3D_MIN_OFFSET
 	#var end: Vector3 = camera_3d.global_position + look_dir * RAY_3D_MAX_DISTANCE
 	var mouse_pos: Vector2 = _viewport.get_mouse_position()
 	var look_dir: Vector3 = camera_3d.project_ray_normal(mouse_pos)
-	var start = camera_3d.project_ray_origin(mouse_pos) + look_dir * RAY_3D_MIN_OFFSET
-	var end = start + look_dir * RAY_3D_MAX_DISTANCE
+	var start: Vector3 = camera_3d.project_ray_origin(mouse_pos) + look_dir * RAY_3D_MIN_OFFSET
+	var end: Vector3 = start + look_dir * RAY_3D_MAX_DISTANCE
 
 	var current_scene: Node = _viewport.get_tree().current_scene
 	var current_scene_name: String = _viewport.get_tree().current_scene.name

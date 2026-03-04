@@ -22,6 +22,7 @@ signal jump_selection(srd: SRData)
 @export var _target_node_label: Label
 @export var _author_label: Label
 @export var _scene_label: Label
+@export var _creation_date_label: Label
 @export var _text_label: Label
 
 var srdata: SRData
@@ -40,32 +41,34 @@ func _process(delta: float) -> void:
 
 func init(srd: SRData) -> void:
 	srdata = srd
-	_position_label.text = str(srd.get_global_position_tr())
-	_text_label.text = srd.text
-	_author_label.text = srd.author
-	_target_node_label.text = srd.target_node
-	_scene_label.text = srd.scene
-	_version_label.text = srd.project_version
-	
-func get_column_text_size(column: SRDataTable.Column) -> int:
-	return used_font.get_string_size(get_column(column).text).x + TEXT_SIZE_OFFSET
+	_position_label.text = srd.get_field_value_str(SRData.Field.GLOBAL_POSITION)
+	_text_label.text = srd.get_field_value_str(SRData.Field.TEXT)
+	_author_label.text = srd.get_field_value_str(SRData.Field.AUTHOR)
+	_target_node_label.text = srd.get_field_value_str(SRData.Field.TARGET_NODE)
+	_scene_label.text = srd.get_field_value_str(SRData.Field.SCENE)
+	_version_label.text = srd.get_field_value_str(SRData.Field.PROJECT_VERSION)
+	_creation_date_label.text = srd.get_field_value_str(SRData.Field.CREATION_DATE)
 
-func set_column_visible(column: SRDataTable.Column, is_visible_new: bool) -> void:
-	get_column(column).visible = is_visible_new
-	
-func set_column_size(column: SRDataTable.Column, size_new: int) -> void:
-	get_column(column).custom_minimum_size.x = size_new
+func get_field_text_size(field: SRData.Field) -> int:
+	return used_font.get_string_size(get_field(field).text).x + TEXT_SIZE_OFFSET
 
-func get_column(column: SRDataTable.Column) -> Label:
-	match column:
-		SRDataTable.Column.POSITION: return _position_label
-		SRDataTable.Column.TEXT: return _text_label
-		SRDataTable.Column.AUTHOR: return _author_label
-		SRDataTable.Column.TARGET_NODE: return _target_node_label
-		SRDataTable.Column.SCENE: return _scene_label
-		SRDataTable.Column.VERSION: return _version_label
+func set_field_visible(field: SRData.Field, is_visible_new: bool) -> void:
+	get_field(field).visible = is_visible_new
+	
+func set_field_size(field: SRData.Field, size_new: int) -> void:
+	get_field(field).custom_minimum_size.x = size_new
+
+func get_field(field: SRData.Field) -> Label:
+	match field:
+		SRData.Field.GLOBAL_POSITION: return _position_label
+		SRData.Field.TEXT: return _text_label
+		SRData.Field.AUTHOR: return _author_label
+		SRData.Field.TARGET_NODE: return _target_node_label
+		SRData.Field.SCENE: return _scene_label
+		SRData.Field.PROJECT_VERSION: return _version_label
+		SRData.Field.CREATION_DATE: return _creation_date_label
 		
-	push_warning("handling for column ", SRDataTable.Column.keys()[column], " not implemented")
+	push_warning("handling for field ", SRData.Field.keys()[field], " not implemented")
 	return null
 
 func _on_gui_input(event: InputEvent) -> void:
@@ -95,14 +98,14 @@ func _on_mouse_exited() -> void:
 
 func update_color() -> void:
 	if is_selected:
-		set_color(SELECTED_IN_SCENE_COLOR if is_in_active_scene else SELECTED_BASE_COLOR)
+		_set_color(SELECTED_IN_SCENE_COLOR if is_in_active_scene else SELECTED_BASE_COLOR)
 		return
 
 	if is_hover:
-		set_color(HOVER_IN_SCENE_COLOR if is_in_active_scene else HOVER_BASE_COLOR)
+		_set_color(HOVER_IN_SCENE_COLOR if is_in_active_scene else HOVER_BASE_COLOR)
 		return
 		
-	set_color(NORMAL_IN_SCENE_COLOR if is_in_active_scene else NORMAL_BASE_COLOR)
+	_set_color(NORMAL_IN_SCENE_COLOR if is_in_active_scene else NORMAL_BASE_COLOR)
 
-func set_color(color: Color) -> void:
+func _set_color(color: Color) -> void:
 	(get("theme_override_styles/panel") as StyleBox).bg_color = color

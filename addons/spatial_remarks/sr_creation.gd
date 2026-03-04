@@ -166,9 +166,6 @@ func _query_possible_targets(config: SRDataAccess.Config) -> Array[TargetNodeDat
 		
 	return _query_possible_targets_no_camera(config, get_viewport())
 
-static func get_current_datetime_str() -> void:
-	return Time.get_datetime_string_from_system()
-
 static func _query_possible_targets_no_camera(config: SRDataAccess.Config, _viewport: Viewport) -> Array[TargetNodeData]:
 	return []
 

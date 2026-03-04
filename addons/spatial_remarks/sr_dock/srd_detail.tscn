@@ -26,26 +26,27 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="SRDDetail" type="HBoxContainer" unique_id=2122743516 node_paths=PackedStringArray("info_text", "text_edit")]
+[node name="SRDDetail" type="HBoxContainer" unique_id=2122743516 node_paths=PackedStringArray("_text_edit", "_field_vbc")]
+offset_right = 874.0
+offset_bottom = 185.0
 size_flags_horizontal = 3
 alignment = 1
 script = ExtResource("1_0qdlq")
-info_text = NodePath("VBoxContainer/InfoBar")
-text_edit = NodePath("TextEdit")
+_text_edit = NodePath("TextEdit")
+_field_vbc = NodePath("VBoxContainer/ScrollContainer/FieldVBC")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1815475883]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="InfoBar" type="RichTextLabel" parent="VBoxContainer" unique_id=840854273]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=2008138751]
 custom_minimum_size = Vector2(180, 150)
 layout_mode = 2
-bbcode_enabled = true
-text = "Position: xxxxxxxxx
-Position: 
-Position: 
-Position: 
-Position: 
-"
+horizontal_scroll_mode = 0
+
+[node name="FieldVBC" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=778553740]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="ButtonHBC" type="HBoxContainer" parent="VBoxContainer" unique_id=1096821738]
 layout_mode = 2
@@ -70,7 +71,9 @@ text = "Close"
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_horizontal = 3
+wrap_mode = 1
 
 [connection signal="pressed" from="VBoxContainer/ButtonHBC/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBC/DeleteButton" to="." method="_on_delete_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBC/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="text_changed" from="TextEdit" to="." method="_on_text_edit_text_changed"]

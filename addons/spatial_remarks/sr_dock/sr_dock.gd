@@ -11,7 +11,6 @@ static var _sr_note_scene: PackedScene
 
 @export var _srd_detail: SRDDetail
 @export var _sr_data_table: SRDataTable
-@export var column_button: Button
 
 var _config: SRDataAccess.Config
 
@@ -36,7 +35,6 @@ func _ready() -> void:
 	_config = SRDataAccess.load_config()
 	
 	if !get_parent() is EditorDock:
-#		print("no editor dock parent - resized not connected")
 		return
 
 	update_sr_data()
@@ -83,9 +81,7 @@ func _update_sr_node_display() -> void:
 
 	for srd: SRData in _sr_data_ar:
 		_add_sr_node_to_scene(srd)
-	
-	#print("num instantiated nodes: ", _node_in_scene.get_children().size())
-	
+		
 func _add_sr_node_to_scene(from_srd: SRData) -> void:
 	if !EditorInterface.get_edited_scene_root() is Node3D:
 		return
@@ -107,7 +103,7 @@ func cleanup_nodes() -> void:
 
 func _on_resized() -> void:
 	var psize: int = (get_parent() as EditorDock).size.x	
-	_sr_data_table.update_column_sizes(psize)
+	_sr_data_table.update_field_sizes(psize)
 
 func _on_unselect_entry() -> void:
 	if !_is_dock_child:
@@ -118,7 +114,8 @@ func _on_unselect_entry() -> void:
 	if _instantiated_nodes.has(_selected_srd):
 		_instantiated_nodes[_selected_srd].set_highlighted(false)
 	_srd_detail.visible = false
-
+	_selected_srd = null
+	
 func _on_select_entry(entry: SRData) -> void:
 	if !_is_dock_child:
 		return
@@ -205,19 +202,23 @@ func _on_column_button_pressed() -> void:
 	col_selection = PopupMenu.new()
 	col_selection.hide_on_checkable_item_selection = false
 	
-	var visible_columns: Array[SRDataTable.Column] = _sr_data_table.visible_columns
-	for col: SRDataTable.Column in SRDataTable.Column.values():
-		var col_name: String = (SRDataTable.Column.keys()[col] as String).to_pascal_case()
+	var visible_columns: Array[SRData.Field] = _sr_data_table.visible_columns
+	var idx: int = 0
+	for col: SRData.Field in SRData.Field.values():
+		if !SRData.is_column_in_editor(col):
+			continue
+		var col_name: String = (SRData.Field.keys()[col] as String).to_pascal_case()
 		col_selection.add_check_item(col_name, col)
-		col_selection.set_item_checked(col, visible_columns.has(col))
-	col_selection.index_pressed.connect(_toggle_col_selection)
+		col_selection.set_item_checked(idx, visible_columns.has(col))
+		idx += 1
+	col_selection.id_pressed.connect(_toggle_col_selection)
 	EditorInterface.popup_dialog(col_selection, Rect2i(get_screen_transform() * get_local_mouse_position(), Vector2i.ZERO))
-	#col_selection.position = column_button.get_global_mouse_position()
 
-func _toggle_col_selection(col_idx: int) -> void:
-	_sr_data_table.toggle_column_visible(col_idx as SRDataTable.Column)
+func _toggle_col_selection(col_id: int) -> void:
+	_sr_data_table.toggle_column_visible(col_id as SRData.Field)
 	if col_selection != null:
-		col_selection.set_item_checked(col_idx, _sr_data_table.visible_columns.has(col_idx))
+		var idx: int = col_selection.get_item_index(col_id)
+		col_selection.set_item_checked(idx, _sr_data_table.visible_columns.has(col_id))
 		
 func _on_srd_detail_unselect_srd() -> void:
 	_on_unselect_entry()

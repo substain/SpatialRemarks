@@ -1,17 +1,15 @@
 [gd_scene format=3 uid="uid://q01v5qmdi74w"]
 
 [ext_resource type="Script" uid="uid://bkts60csom8sh" path="res://addons/spatial_remarks/sr_dock/sr_data_table.gd" id="1_1ahdu"]
-[ext_resource type="PackedScene" uid="uid://djdcjn3f0srac" path="res://addons/spatial_remarks/sr_dock/sr_data_row.tscn" id="2_wlgwo"]
 [ext_resource type="Script" uid="uid://ck7x2lstjukut" path="res://addons/spatial_remarks/sr_dock/sr_data_headers.gd" id="2_xn6sv"]
 
 [node name="SRDataTable" type="VBoxContainer" unique_id=1650774248 node_paths=PackedStringArray("_content_vbc", "_data_headers_hbc")]
 theme_override_constants/separation = 1
 script = ExtResource("1_1ahdu")
 _content_vbc = NodePath("ContentSC/ContentVBC")
-_sr_data_row = ExtResource("2_wlgwo")
 _data_headers_hbc = NodePath("DataHeadersHBC")
 
-[node name="DataHeadersHBC" type="HBoxContainer" parent="." unique_id=197298004 node_paths=PackedStringArray("_version_label", "_position_label", "_target_node_label", "_scene_label", "_author_label", "_text_label")]
+[node name="DataHeadersHBC" type="HBoxContainer" parent="." unique_id=197298004 node_paths=PackedStringArray("_version_label", "_position_label", "_target_node_label", "_scene_label", "_author_label", "_text_label", "_creation_date_label")]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = 2
@@ -23,6 +21,7 @@ _target_node_label = NodePath("TargetNodeLabel")
 _scene_label = NodePath("SceneLabel")
 _author_label = NodePath("AuthorLabel")
 _text_label = NodePath("TextLabel")
+_creation_date_label = NodePath("CreationDateLabel")
 
 [node name="AuthorLabel" type="Label" parent="DataHeadersHBC" unique_id=1589169752]
 custom_minimum_size = Vector2(72, 0)
@@ -57,6 +56,13 @@ layout_mode = 2
 text = "Position"
 text_overrun_behavior = 3
 
+[node name="CreationDateLabel" type="Label" parent="DataHeadersHBC" unique_id=548540862]
+visible = false
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+text = "Date"
+text_overrun_behavior = 3
+
 [node name="TextLabel" type="Label" parent="DataHeadersHBC" unique_id=2063213562]
 custom_minimum_size = Vector2(72, 0)
 layout_mode = 2
@@ -67,7 +73,6 @@ text_overrun_behavior = 3
 layout_mode = 2
 
 [node name="ContentSC" type="ScrollContainer" parent="." unique_id=185368111]
-clip_contents = false
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_vertical = 3

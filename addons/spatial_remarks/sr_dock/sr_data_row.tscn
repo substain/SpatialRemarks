@@ -15,7 +15,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="SrDataRow" type="PanelContainer" unique_id=948769076 node_paths=PackedStringArray("_version_label", "_position_label", "_target_node_label", "_author_label", "_scene_label", "_text_label")]
+[node name="SrDataRow" type="PanelContainer" unique_id=948769076 node_paths=PackedStringArray("_version_label", "_position_label", "_target_node_label", "_author_label", "_scene_label", "_text_label", "_creation_date_label")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -31,6 +31,7 @@ _target_node_label = NodePath("HBoxContainer/TargetNodeLabel")
 _author_label = NodePath("HBoxContainer/AuthorLabel")
 _scene_label = NodePath("HBoxContainer/SceneLabel")
 _text_label = NodePath("HBoxContainer/TextLabel")
+_creation_date_label = NodePath("HBoxContainer/CreationDateLabel")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2115288221]
 layout_mode = 2
@@ -65,6 +66,12 @@ text_overrun_behavior = 3
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "(?,?,?)"
+text_overrun_behavior = 3
+
+[node name="CreationDateLabel" type="Label" parent="HBoxContainer" unique_id=483646955]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "????-??-?? ??:??:??"
 text_overrun_behavior = 3
 
 [node name="TextLabel" type="Label" parent="HBoxContainer" unique_id=218992312]

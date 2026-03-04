@@ -32,6 +32,5 @@ func set_highlighted(is_highlighted: bool) -> void:
 func _on_mouse_entered() -> void:
 	set_highlighted(true)
 
-
 func _on_mouse_exited() -> void:
 	set_highlighted(false)
